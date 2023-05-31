@@ -1,0 +1,23 @@
+version: "3.1"
+
+services:
+  mongodb:
+    container_name: mongodb_lab3
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+    - ./mongo-data:/data/db
+
+  mongo-expres:
+    container_name: mongo_express_lab3
+    image: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+    depends_on:
+      - mongodb
+    ports:
+      - "3300:8081"
+    restart: always
+volumes:
+  mongo-data:

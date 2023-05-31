@@ -26,7 +26,7 @@ const [arr, setArr ] = useState([
   {
     id: 1,
     category: 'course',
-    name: 'howtoopensafari',
+    name: 'howtoopensafarimacos',
     title: 'How to open safari in MacOS',
     content: ["Power on the macbook", "Select Safari on dock", "Click on it"]
   },
