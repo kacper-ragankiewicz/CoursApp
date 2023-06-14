@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, ScrollView, Image, TouchableWithoutFeedback, Keyboard} from 'react-native';
 
 type elementType = {
   id: number,
+  number?: number,
   category: string,
   name: string,
   title: string
@@ -37,35 +38,57 @@ const [arr, setArr ] = useState([
     title: 'How to delete files in MacOS',
     content: ["Select item to delete", "Click with right button", "Select remove from the side list"]
   },
-  {
-    id: 3,
-    category: 'course',
-    name: 'howtopoweronmac',
-    title: 'How to power on Macbook',
-    content: ["Open the macbook", "Find power on button", "Click on it"]
-  },
-  {
-    id: 4,
-    category: 'course',
-    name: 'howtotescamera',
-    title: 'How to test camera on Macbook',
-    content: ["Go to finder", "Search for camera app", "Test your camera"]
-  },
-  {
-    id: 5,
-    category: 'course',
-    name: 'howtoinstallapps',
-    title: 'How to install apps on MacOS',
-    content: ["Open App Store", "Search for app", "Download it and install"]
-  },
-  {
-    id: 6,
-    category: 'course',
-    name: 'howtochangedesktopwallpaper',
-    title: 'How to chenge desktop wallpaper',
-    content: ["Click right on desktop", "Click change wallpaper on side menu", "Choose wallpaper"]
-  }
+  // {
+  //   id: 3,
+  //   category: 'course',
+  //   name: 'howtopoweronmac',
+  //   title: 'How to power on Macbook',
+  //   content: ["Open the macbook", "Find power on button", "Click on it"]
+  // },
+  // {
+  //   id: 4,
+  //   category: 'course',
+  //   name: 'howtotescamera',
+  //   title: 'How to test camera on Macbook',
+  //   content: ["Go to finder", "Search for camera app", "Test your camera"]
+  // },
+  // {
+  //   id: 5,
+  //   category: 'course',
+  //   name: 'howtoinstallapps',
+  //   title: 'How to install apps on MacOS',
+  //   content: ["Open App Store", "Search for app", "Download it and install"]
+  // },
+  // {
+  //   id: 6,
+  //   category: 'course',
+  //   name: 'howtochangedesktopwallpaper',
+  //   title: 'How to chenge desktop wallpaper',
+  //   content: ["Click right on desktop", "Click change wallpaper on side menu", "Choose wallpaper"]
+  // }
 ])
+
+useEffect(() => {
+  fetchNews();
+}, [])
+
+const fetchNews = async () => {
+  const requestOptions = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+    // body: JSON.stringify({ lang: 'pl' })
+  };
+
+  try {
+    await fetch('https://api.chiptree.pl/api/courses/list', requestOptions)
+      .then(response => response.json())
+      .then(data => {
+        setArr(data);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+}
 
   const goActive = (id: number) => {
     setActive({ activeIndex:  id })
@@ -81,6 +104,7 @@ const [arr, setArr ] = useState([
   }
 
   const searchAlgo = () => {
+    fetchNews()
     Keyboard.dismiss();
     setLocation(1);
     setLast(search.bar)
@@ -109,7 +133,7 @@ const [arr, setArr ] = useState([
 
   const ElementGenerator = (props: elementType ) => {
 
-    const stepList = props.content.map((item, index) => <Text style={styles.stepText} >{index + 1}. {item}</Text>)
+    const stepList = props.content?.map((item, index) => <Text style={styles.stepText} >{index + 1}. {item}</Text>)
     return(
       <TouchableWithoutFeedback onPress={() => goActive(props.id)}>
         <View style={styles.elementContainer} >
@@ -128,14 +152,18 @@ const [arr, setArr ] = useState([
     let result: elementType[] = arr.filter(x => x.id == id )
     let matched = result[0]
 
-    const stepList = matched.content.map((item, index) => <Text style={styles.stepText} >{index + 1}. {item}</Text>)
+    const stepList = matched.content?.map((item, index) => <Text style={styles.stepText} >{index + 1}. {item}</Text>)
 
     return(
       <View style={styles.activeViewContainer}>
         <View style={styles.homeTextContainer}>
-          <Text style={styles.homeText}>{matched.title}</Text>
+          <Text style={styles.homeText}>
+            {matched.title}
+          </Text>
         </View>
-        {stepList}
+        <View style={styles.activeViewStepList}>
+          {stepList}
+        </View>
       </View>
     )
   }
@@ -145,14 +173,25 @@ const [arr, setArr ] = useState([
   return (
     <View style={styles.container}>
       <View style={styles.navbar}>
-        <TouchableWithoutFeedback onPress={() => goHome()} accessible={false}>
-          <View style={styles.homeContainer}>
-            <Image
-              source={require('./assets/home.png')}
-              style={styles.homeImg}
-            />
-          </View>
-        </TouchableWithoutFeedback>
+        { active.activeIndex == -1 ?
+          <TouchableWithoutFeedback onPress={() => goHome()} accessible={false}>
+            <View style={styles.homeContainer}>
+              <Image
+                source={require('./assets/home.png')}
+                style={styles.homeImg}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+         :
+         <TouchableWithoutFeedback onPress={() => setActive({activeIndex: -1})} accessible={false}>
+         <View style={styles.homeContainer}>
+           <Image
+             source={require('./assets/arrow-left.png')}
+             style={styles.homeImg}
+           />
+         </View>
+       </TouchableWithoutFeedback>
+        }
         <TextInput
           style={styles.searchInput}
           onChangeText={handleInputChange}
@@ -171,13 +210,26 @@ const [arr, setArr ] = useState([
       </View>
       { active.activeIndex !== -1 && location == 2
       ?
-        <View>
+        <View style={styles.activeViewContainer}>
           {ActiveViewGenerator(active.activeIndex)}
         </View>
       : ( active.activeIndex === -1 && location == 0 ?
+        <View style={styles.mainWrapper}>
           <View style={styles.homeTextContainer}>
             <Text style={styles.homeText}>Home</Text>
           </View>
+          <View style={styles.welcomeContainer}>
+            <Text style={styles.textWelcome} >Welcome on Macksera</Text>
+          </View>
+          {/* <Text>Last Checked</Text>
+          <View style={styles.lastCheckedContainer}>
+            <ScrollView
+            horizontal={true}
+            >
+              {elementList}
+            </ScrollView>
+          </View> */}
+        </View>
         :
         <ScrollView style={styles.content} keyboardShouldPersistTaps='handled' >
           <View style={styles.elementListContainer}>
@@ -211,6 +263,31 @@ const styles = StyleSheet.create({
     height: '16%'
   },
 
+  mainWrapper: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+
+  welcomeContainer: {
+    display: 'flex',
+    marginTop: 20,
+    width: '90%',
+    height: '40%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F2F2F2',
+    borderRadius: 15,
+    borderWidth: 5,
+    borderColor: '#3b4bdb'
+  },
+
+  textWelcome: {
+    fontSize: 45,
+    textAlign: 'center'
+  },
+
   homeContainer: {
     width: 50,
     height: 50,
@@ -220,6 +297,11 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+
+  lastCheckedContainer: {
+    height: '50%',
+    width: '90%'
   },
 
   homeImg: {
@@ -258,13 +340,13 @@ const styles = StyleSheet.create({
 
   homeTextContainer: {
     width: '100%',
-    backgroundColor: '#fcba03'
+    backgroundColor: '#fcba03',
   },
 
   homeText: {
     padding: 10,
     fontSize: 29,
-    fontWeight: '500'
+    fontWeight: '500',
   },
 
   sorryText: {
@@ -308,5 +390,13 @@ const styles = StyleSheet.create({
   stepText: {
     fontSize: 17,
     fontWeight: '400'
+  },
+
+  activeViewContainer: {
+    width: '100%'
+  },
+
+  activeViewStepList: {
+    padding: 10,
   }
 });

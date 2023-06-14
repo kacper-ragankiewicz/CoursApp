@@ -1,0 +1,14 @@
+# POST https://pccfg.truffel.dev/api/compat/ HTTP/1.1
+# content-type: application/json
+
+# {
+#     "cpu": 1
+# }
+
+
+
+# GET https://pccfg.truffel.dev/api/component-list?type=CPU HTTP/1.1
+# content-type: application/json
+
+GET https://api.chiptree.pl/api/courses/list HTTP/1.1
+content-type: application/json
