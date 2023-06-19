@@ -33,7 +33,6 @@ const fetchNews = async () => {
   const requestOptions = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
-    // body: JSON.stringify({ lang: 'pl' })
   };
 
   try {
@@ -178,14 +177,6 @@ const fetchNews = async () => {
           <View style={styles.welcomeContainer}>
             <Text style={styles.textWelcome} >Welcome on Macksera</Text>
           </View>
-          {/* <Text>Last Checked</Text>
-          <View style={styles.lastCheckedContainer}>
-            <ScrollView
-            horizontal={true}
-            >
-              {elementList}
-            </ScrollView>
-          </View> */}
         </View>
         :
         <ScrollView style={styles.content} keyboardShouldPersistTaps='handled' >
