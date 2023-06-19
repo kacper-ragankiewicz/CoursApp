@@ -36,7 +36,7 @@ const fetchNews = async () => {
   };
 
   try {
-    await fetch('https://api.chiptree.pl/api/courses/list', requestOptions)
+    await fetch(`${process.env.API_URL}`, requestOptions)
       .then(response => response.json())
       .then(data => {
         setArr(data);
