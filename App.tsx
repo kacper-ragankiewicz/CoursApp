@@ -23,50 +23,7 @@ export default function App() {
   const [location, setLocation] = useState(0)
   const [active, setActive ] = useState({ activeIndex: -1 })
   const [viewList, setViewList ] = useState<elementType[]>([])
-const [arr, setArr ] = useState([
-  {
-    id: 1,
-    category: 'course',
-    name: 'howtoopensafarimacos',
-    title: 'How to open safari in MacOS',
-    content: ["Power on the macbook", "Select Safari on dock", "Click on it"]
-  },
-  {
-    id: 2,
-    category: 'course',
-    name: 'deletefilesinmacos',
-    title: 'How to delete files in MacOS',
-    content: ["Select item to delete", "Click with right button", "Select remove from the side list"]
-  },
-  // {
-  //   id: 3,
-  //   category: 'course',
-  //   name: 'howtopoweronmac',
-  //   title: 'How to power on Macbook',
-  //   content: ["Open the macbook", "Find power on button", "Click on it"]
-  // },
-  // {
-  //   id: 4,
-  //   category: 'course',
-  //   name: 'howtotescamera',
-  //   title: 'How to test camera on Macbook',
-  //   content: ["Go to finder", "Search for camera app", "Test your camera"]
-  // },
-  // {
-  //   id: 5,
-  //   category: 'course',
-  //   name: 'howtoinstallapps',
-  //   title: 'How to install apps on MacOS',
-  //   content: ["Open App Store", "Search for app", "Download it and install"]
-  // },
-  // {
-  //   id: 6,
-  //   category: 'course',
-  //   name: 'howtochangedesktopwallpaper',
-  //   title: 'How to chenge desktop wallpaper',
-  //   content: ["Click right on desktop", "Click change wallpaper on side menu", "Choose wallpaper"]
-  // }
-])
+const [arr, setArr ] = useState([])
 
 useEffect(() => {
   fetchNews();
