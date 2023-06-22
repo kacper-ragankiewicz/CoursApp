@@ -1,4 +1,4 @@
-## Auto code review
+# Auto code review
 
 [![codebeat badge](https://codebeat.co/badges/9b8749c3-50fa-4d3c-88da-b46b11881ca2)](https://codebeat.co/projects/github-com-kacper-ragankiewicz-coursapp-main)
 
