@@ -1,3 +1,9 @@
+## Auto code review
+
+[![codebeat badge](https://codebeat.co/badges/9b8749c3-50fa-4d3c-88da-b46b11881ca2)](https://codebeat.co/projects/github-com-kacper-ragankiewicz-coursapp-main)
+
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/af2cf741f15f48c4a48171cd6b19911e)](https://app.codacy.com/gh/kacper-ragankiewicz/coursApp/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+
 # coursApp
 React Native app for courses search with API data fetching
 
